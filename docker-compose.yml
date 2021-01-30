@@ -1,0 +1,44 @@
+version: "3"
+services:
+    auth:
+        container_name: auth
+        build:
+            context: ./auth
+            dockerfile: Dockerfile
+        image: enael/makeupauth
+        ports:
+            - "3000:3000"
+            - "4000:4000"
+        volumes:
+            - ./auth:/usr/src/app
+        stdin_open: true
+        networks: 
+            - microservices
+
+    user:
+        container_name: user
+        build:
+            context: ./user
+            dockerfile: Dockerfile
+        image: enael/makeupuser
+        ports:
+            - "3010:3010"
+            - "4010:4010"
+        volumes:
+            - ./user:/usr/src/app
+        links:
+            - mongo-user
+        networks: 
+            - microservices
+    mongo-user:
+        container_name: mongo-user
+        image: mongo
+        volumes: 
+            - ~/mongo/data:/data/db
+        ports:
+            - "27017:27017"
+        networks: 
+            - microservices
+networks: 
+    microservices:
+        driver: bridge
