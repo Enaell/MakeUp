@@ -1,37 +1,37 @@
 version: "3"
 services:
-    auth:
-        container_name: auth
+    gateway:
+        container_name: gateway
         build:
-            context: ./auth
+            context: ./gateway
             dockerfile: Dockerfile
-        image: enael/makeupauth
+        image: enael/makeupgateway
         ports:
             - "3000:3000"
             - "4000:4000"
         volumes:
-            - ./auth:/usr/src/app
+            - ./gateway:/usr/src/app
         stdin_open: true
         networks: 
             - microservices
 
-    user:
-        container_name: user
+    users:
+        container_name: users
         build:
-            context: ./user
+            context: ./users
             dockerfile: Dockerfile
-        image: enael/makeupuser
+        image: enael/makeupusers
         ports:
             - "3010:3010"
             - "4010:4010"
         volumes:
-            - ./user:/usr/src/app
+            - ./users:/usr/src/app
         links:
-            - mongo-user
+            - mongo-users
         networks: 
             - microservices
-    mongo-user:
-        container_name: mongo-user
+    mongo-users:
+        container_name: mongo-users
         image: mongo
         volumes: 
             - ~/mongo/data:/data/db
