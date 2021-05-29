@@ -1,5 +1,16 @@
 version: "3"
 services:
+    client:
+        container_name: client
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        image: enael/client
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client:/usr/src/app
+        stdin_open: true
     gateway:
         container_name: gateway
         build:
